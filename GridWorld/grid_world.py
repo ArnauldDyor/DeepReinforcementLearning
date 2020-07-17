@@ -15,8 +15,6 @@ class Grid: # Environment
     self.j = start[1]
 
   def set(self, rewards, actions):
-    # rewards should be a dict of: (i, j): r (row, col): reward
-    # actions should be a dict of: (i, j): A (row, col): list of possible actions
     self.rewards = rewards
     self.actions = actions
 
@@ -114,8 +112,6 @@ def standard_grid():
 
 
 def negative_grid(step_cost=-0.1):
-  # in this game we want to try to minimize the number of moves
-  # so we will penalize every move
   g = standard_grid()
   g.rewards.update({
     (0, 0): step_cost,
@@ -142,8 +138,6 @@ class WindyGrid:
     self.j = start[1]
 
   def set(self, rewards, actions, probs):
-    # rewards should be a dict of: (i, j): r (row, col): reward
-    # actions should be a dict of: (i, j): A (row, col): list of possible actions
     self.rewards = rewards
     self.actions = actions
     self.probs = probs
@@ -179,9 +173,6 @@ class WindyGrid:
     return (self.i, self.j) not in self.actions
 
   def all_states(self):
-    # possibly buggy but simple way to get all states
-    # either a position that has possible next actions
-    # or a position that yields a reward
     return set(self.actions.keys()) | set(self.rewards.keys())
 
 
