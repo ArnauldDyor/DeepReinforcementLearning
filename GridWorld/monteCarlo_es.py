@@ -1,11 +1,8 @@
 from __future__ import print_function, division
 from builtins import range
-# Note: you may need to update your version of future
-# sudo pip install -U future
 
 
 import numpy as np
-import matplotlib.pyplot as plt
 from grid_world import standard_grid, negative_grid
 from iter_policy_evaluation import print_values, print_policy
 
@@ -16,12 +13,6 @@ ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 #  finding the optimal policy(policy optimization)
 
 def play_game(grid, policy):
-  # returns a list of states and corresponding returns
-
-  # reset game to start at a random position
-  # we need to do this if we have a deterministic policy
-  # we would never end up at certain states, but we still want to measure their value
-  # this is called the "exploring starts" method
   start_states = list(grid.actions.keys())
   start_idx = np.random.choice(len(start_states))
   grid.set_state(start_states[start_idx])
@@ -42,12 +33,6 @@ def play_game(grid, policy):
     s = grid.current_state()
 
     if s in seen_states:
-      # hack so that we don't end up in an infinitely long episode
-      # bumping into the wall repeatedly
-      # if num_steps == 1 -> bumped into a wall and haven't moved anywhere
-      #   reward = -10
-      # else:
-      #   reward = falls off by 1 / num_steps
       reward = -10. / num_steps
       states_actions_rewards.append((s, None, reward))
       break
@@ -64,9 +49,6 @@ def play_game(grid, policy):
   states_actions_returns = []
   first = True
   for s, a, r in reversed(states_actions_rewards):
-    # the value of the terminal state is 0 by definition
-    # we should ignore the first state we encounter
-    # and ignore the last G, which is meaningless since it doesn't correspond to any move
     if first:
       first = False
     else:
@@ -77,8 +59,6 @@ def play_game(grid, policy):
 
 
 def max_dict(d):
-  # returns the argmax (key) and max (value) from a dictionary
-  # put this into a function since we are using it so often
   max_key = None
   max_val = float('-inf')
   for k, v in d.items():
@@ -89,11 +69,6 @@ def max_dict(d):
 
 
 if __name__ == '__main__':
-  # use the standard grid again (0 for every step) so that we can compare
-  # to iterative policy evaluation
-  # grid = standard_grid()
-  # try the negative grid too, to see if agent will learn to go past the "bad spot"
-  # in order to minimize number of steps
   grid = negative_grid(step_cost=-0.9)
 
   # print rewards
