@@ -13,10 +13,6 @@ ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
 # policy evaluation
 
 def play_game(grid, policy):
-  # returns a list of states and corresponding returns
-  # reset game to start at a random position
-  # we need to do this, because given our current deterministic policy
-  # we would never end up at certain states, but we still want to measure their value
   start_states = list(grid.actions.keys())
   start_idx = np.random.choice(len(start_states))
   grid.set_state(start_states[start_idx])
@@ -33,9 +29,6 @@ def play_game(grid, policy):
   states_and_returns = []
   first = True
   for s, r in reversed(states_and_rewards):
-    # the value of the terminal state is 0 by definition
-    # we should ignore the first state we encounter
-    # and ignore the last G, which is meaningless since it doesn't correspond to any move
     if first:
       first = False
     else:
@@ -46,8 +39,6 @@ def play_game(grid, policy):
 
 
 if __name__ == '__main__':
-  # use the standard grid again (0 for every step) so that we can compare
-  # to iterative policy evaluation
   grid = standard_grid()
 
   # print rewards
